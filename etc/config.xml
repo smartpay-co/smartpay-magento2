@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <smartpay>
+                <model>SmartpayFacade</model>
+                <payment_action>true</payment_action>
+                <active>0</active>
+                <title><![CDATA[Smartpay]]></title>
+                <checkout_title><![CDATA[Pay in <strong>[installments]</strong> installments of <strong>[price]</strong> without interest with [logo]]]></checkout_title>
+                <api_url><![CDATA[https://api.smartpay.co/v1]]></api_url>
+                <public_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <secret_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <is_gateway>1</is_gateway>
+                <can_use_checkout>1</can_use_checkout>
+                <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
+                <can_use_internal>0</can_use_internal>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <can_refund>1</can_refund>
+                <can_void>0</can_void>
+                <can_cancel>0</can_cancel>
+                <is_offline>0</is_offline>
+                <manual_capture>0</manual_capture>
+            </smartpay>
+        </payment>
+    </default>
+</config>

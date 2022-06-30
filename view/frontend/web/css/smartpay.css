@@ -1,0 +1,9 @@
+.smartpay_checkout_logo {
+    background-image: url("../images/logotype-color-light.svg");
+    background-size: 105px 31px;
+    vertical-align: middle;
+    display: inline-block;
+    height: 31px;
+    width: 105px;
+}
+
