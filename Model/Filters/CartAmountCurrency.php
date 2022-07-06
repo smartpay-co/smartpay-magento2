@@ -29,18 +29,29 @@ class CartAmountCurrency implements FilterInterface
      */
     public function execute(CartInterface $quote): bool
     {
-        function isInt($x)
+        /**
+         * Check if the amount is int
+         * @param $x
+         * @return bool
+         */
+        function isInt($x): bool
         {
             return (is_numeric($x) && (int)$x == $x);
         }
-        
-        if ($quote->getCurrency()->getQuoteCurrencyCode() != 'JPY') return false;
-        if (!isInt($quote->getGrandTotal())) return false;
-        
-        foreach ($quote->getAllvisibleItems() as $item) {
-            if(!isInt($item->getPriceInclTax())) return false;
+
+        if ($quote->getCurrency()->getQuoteCurrencyCode() != 'JPY') {
+            return false;
         }
-        
+        if (!isInt($quote->getGrandTotal())) {
+            return false;
+        }
+
+        foreach ($quote->getAllvisibleItems() as $item) {
+            if (!isInt($item->getPriceInclTax())) {
+                return false;
+            }
+        }
+
         return true;
     }
 }
