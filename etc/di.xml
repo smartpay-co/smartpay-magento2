@@ -74,9 +74,20 @@
             </argument>
         </arguments>
     </virtualType>
-
+    <type name="Magento\Payment\Model\MethodList">
+        <plugin sortOrder="1" name="disable_payment_method"
+                type="Smartpay\Smartpay\Plugin\DisablePaymentMethod"/>
+    </type>
     <type name="Magento\Quote\Model\QuoteManagement">
         <plugin sortOrder="1" name="prevent_order_creation"
                 type="Smartpay\Smartpay\Plugin\PreventOrderCreation"/>
+    </type>
+    <type name="Smartpay\Smartpay\Model\ProcessFilters">
+        <arguments>
+            <argument name="filters" xsi:type="array">
+                <item name="cart_amount_currency" xsi:type="object">Smartpay\Smartpay\Model\Filters\CartAmountCurrency</item>
+                <item name="allow_countries" xsi:type="object">Smartpay\Smartpay\Model\Filters\AllowCountries</item>
+            </argument>
+        </arguments>
     </type>
 </config>
