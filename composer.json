@@ -1,0 +1,30 @@
+{
+  "name": "smartpay-co/smartpay-magento2",
+  "description": "Smartpay payment plugin for Magento 2",
+  "type": "magento2-module",
+  "keywords": [
+    "smartpay",
+    "magento2"
+  ],
+  "homepage": "https://smartpay.co",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Smartpay",
+      "email": "uxe@smartpay.co"
+    }
+  ],
+  "require": {
+    "php": ">= 7.1",
+    "magento/magento-composer-installer": "*",
+    "smartpay-co/sdk-php": "^0.4.0"
+  },
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Smartpay\\Smartpay\\": ""
+    }
+  }
+}
