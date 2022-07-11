@@ -6,5 +6,11 @@
         <css src="Smartpay_Smartpay::css/smartpay.css"/>
     </head>
     <body>
+        <referenceContainer name="content">
+            <block
+                name="product_smartpay_widget" after="-"
+                template="Smartpay_Smartpay::osm.phtml">
+            </block>
+        </referenceContainer>
     </body>
 </page>
