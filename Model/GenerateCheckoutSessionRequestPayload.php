@@ -42,7 +42,7 @@ class GenerateCheckoutSessionRequestPayload
         $payload['amount'] = $quote->getGrandTotal();
         $payload['currency'] = $quote->getQuoteCurrencyCode();
         $payload['reference'] = "order_".$quote->getReservedOrderId();
-        $payload['successUrl'] = $this->storeManager->getStore()->getUrl('smartpay/confirm');
+        $payload['successUrl'] = $this->storeManager->getStore()->getUrl('smartpay/confirm') . "?quoteId=" . $quote->getId();
         $payload['cancelUrl'] = $this->storeManager->getStore()->getUrl('smartpay/cancel');
         $payload['items'] = [];
         foreach ($quote->getAllvisibleItems() as $quoteItem) {

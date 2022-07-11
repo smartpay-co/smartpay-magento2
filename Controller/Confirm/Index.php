@@ -11,6 +11,7 @@ use Magento\Framework\Exception\AuthorizationException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Sales\Api\InvoiceOrderInterface;
+use Magento\Framework\App\RequestInterface;
 use Smartpay\Smartpay\Gateway\Settings;
 use Smartpay\Smartpay\Model\PlaceOrder;
 use Smartpay\Smartpay\Model\CreateAuthTransaction;
@@ -22,6 +23,10 @@ class Index implements HttpGetActionInterface
      * @var RedirectFactory
      */
     private $redirectFactory;
+    /**
+     * @var RequestInterface
+     */
+    private $request;
     /**
      * @var ManagerInterface
      */
@@ -54,6 +59,7 @@ class Index implements HttpGetActionInterface
     /**
      * Index constructor.
      * @param RedirectFactory $redirectFactory
+     * @param RequestInterface $request
      * @param ManagerInterface $messageManager
      * @param InvoiceOrderInterface $invoiceOrder
      * @param Session $checkoutSession
@@ -64,6 +70,7 @@ class Index implements HttpGetActionInterface
      */
     public function __construct(
         RedirectFactory $redirectFactory,
+        RequestInterface $request,
         ManagerInterface $messageManager,
         InvoiceOrderInterface $invoiceOrder,
         Session $checkoutSession,
@@ -73,6 +80,7 @@ class Index implements HttpGetActionInterface
         CreateAuthTransaction $createAuthTransaction
     ) {
         $this->redirectFactory = $redirectFactory;
+        $this->request = $request;
         $this->messageManager = $messageManager;
         $this->invoiceOrder = $invoiceOrder;
         $this->checkoutSession = $checkoutSession;
@@ -95,7 +103,7 @@ class Index implements HttpGetActionInterface
             $quoteId = $this->getQuoteByReservedOrderId->execute($this->checkoutSession->getReservedOrderId());
         }
         if ($quoteId == null) {
-            // TODO: This happens rarely.
+            $quoteId = (int)$this->request->getParam('quoteId');
         }
         $this->checkoutSession->unsPlaceOrder();
         try {
