@@ -55,6 +55,10 @@ class Index implements HttpGetActionInterface
      * @var CreateAuthTransaction
      */
     private $createAuthTransaction;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
 
     /**
      * Index constructor.
@@ -67,6 +71,7 @@ class Index implements HttpGetActionInterface
      * @param Settings $settings
      * @param PlaceOrder $placeOrder
      * @param CreateAuthTransaction $createAuthTransaction
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         RedirectFactory $redirectFactory,
@@ -77,7 +82,8 @@ class Index implements HttpGetActionInterface
         GetQuoteByReservedOrderId $getQuoteByReservedOrderId,
         Settings $settings,
         PlaceOrder $placeOrder,
-        CreateAuthTransaction $createAuthTransaction
+        CreateAuthTransaction $createAuthTransaction,
+        \Psr\Log\LoggerInterface $logger
     ) {
         $this->redirectFactory = $redirectFactory;
         $this->request = $request;
@@ -88,6 +94,7 @@ class Index implements HttpGetActionInterface
         $this->settings = $settings;
         $this->placeOrder = $placeOrder;
         $this->createAuthTransaction = $createAuthTransaction;
+        $this->logger = $logger;
     }
 
     /**
@@ -101,22 +108,28 @@ class Index implements HttpGetActionInterface
 
         if ($this->checkoutSession->getReservedOrderId()) {
             $quoteId = $this->getQuoteByReservedOrderId->execute($this->checkoutSession->getReservedOrderId());
+            $this->logger->debug("[Smartpay] Confirm#Index: reservedOrderId found: {$quoteId}");
         }
         if ($quoteId == null) {
             $quoteId = (int)$this->request->getParam('quoteId');
+            $this->logger->warning("[Smartpay] Confirm#Index: reservedOrderId not found, using redirected param quoteId {$quoteId} instead.");
         }
         $this->checkoutSession->unsPlaceOrder();
         try {
             $orderId = $this->placeOrder->execute($this->checkoutSession, $quoteId);
+            $this->logger->info("[Smartpay] Confirm#Index: Order {$orderId} placed for quote {$quoteId}.");
             if ($this->settings->getManualCapture()) {
+                $this->logger->debug("[Smartpay] Confirm#Index: ManualCapture mode, do nothing for order {$orderId}");
                 // NOTE: With this we can void authorize tx, but we can't do multiple capture. Disable for now.
                 // $this->createAuthTransaction->execute($orderId);
             } else {
+                $this->logger->debug("[Smartpay] Confirm#Index: invoicing order {$orderId}");
                 $this->invoiceOrder->execute($orderId, true);
             }
         } catch (LocalizedException | AuthorizationException $e) {
             $status = false;
             $this->messageManager->addErrorMessage(__($e->getMessage()));
+            $this->logger->critical("[Smartpay] Confirm#Index: error", ['exception' => $e]);
         }
 
         if ($status) {

@@ -19,17 +19,24 @@ class Refund implements ClientInterface
      * @var Sdk
      */
     private $sdk;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
 
     /**
-     * Refund constructor.
      * @param ManagerInterface $messageManager
+     * @param Sdk $sdk
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         ManagerInterface $messageManager,
-        Sdk $sdk
+        Sdk $sdk,
+        \Psr\Log\LoggerInterface $logger
     ) {
         $this->messageManager = $messageManager;
         $this->sdk = $sdk;
+        $this->logger = $logger;
     }
 
     /**
@@ -40,6 +47,13 @@ class Refund implements ClientInterface
     {
         $creditMemo = $transferObject->getBody()['payment']->getCreditmemo();
         $smartpayPaymentId = $creditMemo->getInvoice()->getTransactionId();
+        $this->logger->info("[Smartpay] Refund:", [
+            'payment' => $smartpayPaymentId,
+            'amount' => $creditMemo->getGrandTotal(),
+            'currency' => $creditMemo->getOrderCurrencyCode(),
+            'reference' => "creditmemo_".$creditMemo->getIncrementId(),
+            'reason' => Smartpay::REJECT_REQUEST_BY_CUSTOMER,
+        ]);
         if ($smartpayPaymentId === null) {
             throw new \Exception(__('Missing Smartpay Order Id'));
         }
@@ -54,6 +68,13 @@ class Refund implements ClientInterface
             ]);
             $transferObject->getBody()['payment']->setTransactionId($response->asJson()['id']);
         } catch (\Exception $e) {
+            $this->logger->critical("[Smartpay] Refund: error", ['exception' => $e]);
+            if ($e instanceof \GuzzleHttp\Exception\BadResponseException) {
+                $this->logger->critical(
+                    "[Smartpay] Refund: error response",
+                    ['response' => $e->getResponse()->getBody()]
+                );
+            }
             $this->messageManager->addErrorMessage($e->getMessage());
         }
 

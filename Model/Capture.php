@@ -24,21 +24,28 @@ class Capture implements ClientInterface
      * @var TransactionRepositoryInterface
      */
     private $transactionRepository;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
 
     /**
      * Capture constructor.
      * @param Sdk $sdk
      * @param GetSmartpayOrderId $getSmartpayOrderId
      * @param TransactionRepositoryInterface $transactionRepository
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         Sdk $sdk,
         GetSmartpayOrderId $getSmartpayOrderId,
-        TransactionRepositoryInterface $transactionRepository
+        TransactionRepositoryInterface $transactionRepository,
+        \Psr\Log\LoggerInterface $logger
     ) {
         $this->sdk = $sdk;
         $this->getSmartpayOrderId = $getSmartpayOrderId;
         $this->transactionRepository = $transactionRepository;
+        $this->logger = $logger;
     }
 
     /**
@@ -50,6 +57,7 @@ class Capture implements ClientInterface
         /** @var \Magento\Sales\Model\Order $order */
         $order = $transferObject->getBody()['payment']->getOrder();
         $smartpayOrderId = $this->getSmartpayOrderId->execute((int) $order->getEntityId(), 'sales_order');
+        $this->logger->info("[Smartpay] Capture: capturing amount {$transferObject->getBody()['amount']} for order {$order->getEntityId()} smartpayOrderId {$smartpayOrderId}");
         /** @noinspection PhpUndefinedMethodInspection */
         try {
             $response = $this->sdk->getApi()->capture([
@@ -68,6 +76,13 @@ class Capture implements ClientInterface
 //                $authTransaction->close();
 //            }
         } catch (\Exception $e) {
+            $this->logger->critical("[Smartpay] Capture: error", ['exception' => $e]);
+            if ($e instanceof \GuzzleHttp\Exception\BadResponseException) {
+                $this->logger->critical(
+                    "[Smartpay] Capture: error response",
+                    ['response' => $e->getResponse()->getBody()]
+                );
+            }
             throw new AuthorizationException(__('Payment capture was not authorized from Smartpay.'));
         }
 

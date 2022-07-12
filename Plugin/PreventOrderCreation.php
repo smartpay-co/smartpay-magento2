@@ -26,21 +26,29 @@ class PreventOrderCreation
      * @var Settings
      */
     private $settings;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
 
     /**
      * PreventOrderCreation constructor.
      * @param CartRepositoryInterface $cartRepository
      * @param CheckoutSession $checkoutSession
      * @param Settings $settings
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
-        CartRepositoryInterface $cartRepository,
-        CheckoutSession $checkoutSession,
-        Settings $settings
-    ) {
+        CartRepositoryInterface  $cartRepository,
+        CheckoutSession          $checkoutSession,
+        Settings                 $settings,
+        \Psr\Log\LoggerInterface $logger
+    )
+    {
         $this->cartRepository = $cartRepository;
         $this->checkoutSession = $checkoutSession;
         $this->settings = $settings;
+        $this->logger = $logger;
     }
 
     /**
@@ -54,20 +62,24 @@ class PreventOrderCreation
      * @noinspection PhpUndefinedMethodInspection
      */
     public function aroundPlaceOrder(
-        QuoteManagement $subject,
-        callable $proceed,
-        $cartId,
+        QuoteManagement  $subject,
+        callable         $proceed,
+                         $cartId,
         PaymentInterface $paymentMethod = null
-    ): int {
+    ): int
+    {
         $quote = $this->cartRepository->get($cartId);
         if ($quote->getPayment()->getMethod() === $this->settings->getCode()
             && !$this->checkoutSession->getPlaceOrder()) {
             $quote->reserveOrderId();
             $this->cartRepository->save($quote);
             $this->checkoutSession->setReservedOrderId($quote->getReservedOrderId());
+
+            $this->logger->debug("[Smartpay] PreventOrderCreation: quoteId {$quote->getId()} reservedOrderId {$quote->getReservedOrderId()}");
+
             return 0;
         }
 
-        return (int) $proceed($cartId, $paymentMethod);
+        return (int)$proceed($cartId, $paymentMethod);
     }
 }
