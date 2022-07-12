@@ -6,9 +6,9 @@
         <css src="Smartpay_Smartpay::css/smartpay.css"/>
     </head>
     <body>
-        <referenceContainer name="content">
+        <referenceContainer name="product.info.extrahint">
             <block
-                name="product_smartpay_widget" after="-"
+                name="product_smartpay_widget"
                 template="Smartpay_Smartpay::osm.phtml">
             </block>
         </referenceContainer>
