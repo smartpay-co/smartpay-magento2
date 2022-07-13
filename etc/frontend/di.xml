@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <virtualType name="Smartpay\Smartpay\Ui\ViewModel\Virtual\SmartWidgetProductPageConfig"
-                 type="Smartpay\Smartpay\Ui\ViewModel\SmartWidgetConfig">
+    <virtualType name="Smartpay\Smartpay\Ui\ViewModel\Virtual\OSMProductPageConfig"
+                 type="Smartpay\Smartpay\Ui\ViewModel\OSMConfig">
         <arguments>
             <argument name="type" xsi:type="string">product</argument>
         </arguments>
     </virtualType>
 
-    <virtualType name="Smartpay\Smartpay\Ui\ViewModel\Virtual\SmartWidgetCartPageConfig"
-                 type="Smartpay\Smartpay\Ui\ViewModel\SmartWidgetConfig">
+    <virtualType name="Smartpay\Smartpay\Ui\ViewModel\Virtual\OSMCartPageConfig"
+                 type="Smartpay\Smartpay\Ui\ViewModel\OSMConfig">
         <arguments>
             <argument name="type" xsi:type="string">cart</argument>
         </arguments>

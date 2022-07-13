@@ -10,6 +10,12 @@
             <block
                 name="product_smartpay_widget"
                 template="Smartpay_Smartpay::osm.phtml">
+                <arguments>
+                    <argument xsi:type="object"
+                          name="config_view_model">Smartpay\Smartpay\Ui\ViewModel\Virtual\OSMProductPageConfig</argument>
+                    <argument xsi:type="object"
+                              name="data_view_model">Smartpay\Smartpay\Ui\ViewModel\ProductPageData</argument>
+                </arguments>
             </block>
         </referenceContainer>
     </body>

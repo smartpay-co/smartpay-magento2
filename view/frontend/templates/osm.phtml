@@ -1,15 +1,21 @@
 <?php
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Smartpay\Smartpay\Ui\ViewModel\OSMConfig $configViewModel */
+/** @var \Smartpay\Smartpay\Ui\ViewModel\DataViewModelInterface $dataViewModel */
 
-$public_key = 'pk_test_1234567';
+$configViewModel = $block->getConfigViewModel();
+$dataViewModel = $block->getDataViewModel();
 
-$osm_type = 'product'; // $block->getData('osm_type');
+$public_key = $configViewModel->getPublicKey();
+$osm_class = $configViewModel->getOSMClass();
+$theme = $configViewModel->getTheme();
+$logo_theme = $configViewModel->getLogoTheme();
 $type = 'block';
-$theme = 'white';
-$logo_theme = 'color';
-$brand_name = 'Nike';
+$brand_name = '';
 
-$amount = 15400;
-
+$amount = $dataViewModel->getPrice();
 ?>
-<div class="smartpay-osm-<?php echo $osm_type ?>" data-prop-type="<?php echo $type ?>" data-prop-theme="<?php echo $theme ?>" data-prop-amount="<?php echo $amount ?>" data-prop-logo-theme="<?php echo $logo_theme ?>" data-prop-brand-name="<?php echo $brand_name ?>"></div>
+<?php if ($configViewModel->isVisible() && $configViewModel->isSmartpayActive()): ?>
+<div class="<?php echo $osm_class ?>" data-prop-type="<?php echo $type ?>" data-prop-theme="<?php echo $theme ?>" data-prop-amount="<?php echo $amount ?>" data-prop-logo-theme="<?php echo $logo_theme ?>" data-prop-brand-name="<?php echo $brand_name ?>"></div>
 <script src="https://js.smartpay.co/messaging.js" data-merchant="<?php echo $public_key; ?>" defer="defer"></script>
+<?php endif; ?>
