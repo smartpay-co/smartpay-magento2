@@ -81,7 +81,7 @@ class OSMConfig implements ArgumentInterface
     {
         return [
             'product' => 'smartpay-osm-product',
-            'cart' => 'smartpay-osm-payment-method'
+            'cart' => 'smartpay-osm-product'
         ][$this->type];
     }
 
