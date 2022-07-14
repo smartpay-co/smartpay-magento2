@@ -6,6 +6,14 @@ This plugin supports Magento2 version
 * 2.3 and higher
 * 2.4 and higher
 
+## Features
+* Dead-simple plugin installation
+* Smartpay checkout experience
+* Deep integration with Magento order workflow
+* Automatic & manual capture
+* [On-site messaging](https://en.docs.smartpay.co/docs/on-site-messaging) to boost sales
+
+
 ## Installation
 You can install our plugin through Composer:
 ```
