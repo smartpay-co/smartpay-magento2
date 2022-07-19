@@ -1,0 +1,21 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Smartpay\Smartpay\Ui\ViewModel\OSMConfig $configViewModel */
+/** @var \Smartpay\Smartpay\Ui\ViewModel\DataViewModelInterface $dataViewModel */
+
+$configViewModel = $block->getConfigViewModel();
+$dataViewModel = $block->getDataViewModel();
+
+$public_key = $configViewModel->getPublicKey();
+$osm_class = $configViewModel->getOSMClass();
+$theme = $configViewModel->getTheme();
+$logo_theme = $configViewModel->getLogoTheme();
+$type = 'block';
+$brand_name = '';
+
+$amount = $dataViewModel->getPrice();
+?>
+<?php if ($configViewModel->isVisible() && $configViewModel->isSmartpayActive()): ?>
+<div class="<?php echo $osm_class ?>" data-prop-type="<?php echo $type ?>" data-prop-theme="<?php echo $theme ?>" data-prop-amount="<?php echo $amount ?>" data-prop-logo-theme="<?php echo $logo_theme ?>" data-prop-brand-name="<?php echo $brand_name ?>"></div>
+<script src="https://js.smartpay.co/messaging.js" data-merchant="<?php echo $public_key; ?>" defer="defer"></script>
+<?php endif; ?>

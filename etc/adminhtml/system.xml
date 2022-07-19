@@ -38,6 +38,25 @@
                 <field id="instructions" translate="label" type="textarea" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Instructions</label>
                 </field>
+                <group id="osm" translate="label" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>On-site messaging</label>
+                    <field id="cart_visible" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Display in Cart Page</label>
+                        <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    </field>
+                    <field id="product_visible" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Display in Product Page</label>
+                        <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    </field>
+                    <field id="theme" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Theme</label>
+                        <source_model>Smartpay\Smartpay\Block\Config\Source\ListOSMTheme</source_model>
+                    </field>
+                    <field id="logo_theme" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Logo Theme</label>
+                        <source_model>Smartpay\Smartpay\Block\Config\Source\ListOSMLogoTheme</source_model>
+                    </field>
+                </group>
             </group>
         </section>
     </system>
