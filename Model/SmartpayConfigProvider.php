@@ -52,7 +52,7 @@ class SmartpayConfigProvider implements ConfigProviderInterface
             'payment' => [
                 'smartpay' => [
                     'logo' => $this->getLogo(),
-                    'title' => __($this->scopeConfig->getValue('payment/smartpay/checkout_title')),
+                    'title' => "[logo] で [price] を手数料無料の[installments]回後払いで支払う",
                     'instructions' => __($this->scopeConfig->getValue('payment/smartpay/instructions')),
                     'number_of_payments' => 3
                 ]
