@@ -19,13 +19,6 @@ define([
     );
   };
 
-  const currencySymbol = function () {
-    return window.checkoutConfig.totalsData.base_currency_code &&
-      window.checkoutConfig.totalsData.base_currency_code === "JPY"
-      ? "¥"
-      : "";
-  };
-
   return Component.extend({
     redirectAfterPlaceOrder: false,
     defaults: {
@@ -60,9 +53,9 @@ define([
       const config = window.checkoutConfig.payment.smartpay;
       const grandTotal = quote.totals().base_grand_total;
       const installments = config.number_of_payments;
-      const price =
-        currencySymbol() +
-        priceUtils.formatPrice(getAmountForTheFirst(grandTotal, installments));
+      const price = priceUtils.formatPrice(
+        getAmountForTheFirst(grandTotal, installments)
+      );
       const logo = config.logo;
       const str = config.title;
 
