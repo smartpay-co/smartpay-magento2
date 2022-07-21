@@ -1,9 +1,16 @@
-.smartpay_checkout_logo {
-    background-image: url("../images/logotype-color-light.svg");
-    background-size: 105px 31px;
-    vertical-align: middle;
+.smartpay-checkout-logo {
     display: inline-block;
-    height: 31px;
-    width: 105px;
+    overflow: hidden;
+    margin-top: -2px;
+    width: 130px;
+    height: 24px;
+    text-indent: 100%;
+    vertical-align: middle;
+    color: transparent;
+    background-image: url("../images/logotype-color-light.svg");
+    background-size: cover;
 }
 
+.smartpay-payment-method-detail {
+    margin-bottom: 1em;
+}

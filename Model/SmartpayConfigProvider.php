@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Smartpay\Smartpay\Model;
@@ -40,7 +41,7 @@ class SmartpayConfigProvider implements ConfigProviderInterface
      */
     private function getLogo(): string
     {
-        return '<span class="smartpay_checkout_logo"></span>';
+        return '<span class="smartpay-checkout-logo">Smartpay</span>';
     }
 
     /**
@@ -54,7 +55,8 @@ class SmartpayConfigProvider implements ConfigProviderInterface
                     'logo' => $this->getLogo(),
                     'title' => "[logo] で [price] を手数料無料の[installments]回後払いで支払う",
                     'instructions' => __($this->scopeConfig->getValue('payment/smartpay/instructions')),
-                    'number_of_payments' => 3
+                    'number_of_payments' => 3,
+                    'public_key' => __($this->scopeConfig->getValue('payment/smartpay/public_key')),
                 ]
             ]
         ];

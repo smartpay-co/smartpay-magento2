@@ -15,6 +15,10 @@
         <!-- ko template: getTemplate() --><!-- /ko -->
         <!--/ko-->
 
+        <div class="smartpay-payment-method-detail" data-bind="childrenComplete: renderOsm">
+            <div class="smartpay-osm-payment-method" data-bind="attr: {'data-prop-amount': getGrandTotal()}"></div>
+        </div>
+
         <div class="payment-method-billing-address">
             <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
             <!-- ko template: getTemplate() --><!-- /ko -->
