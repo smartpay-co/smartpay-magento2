@@ -47,13 +47,13 @@ class CartAmountCurrency implements FilterInterface
         }
 
         if ($quote->getCurrency()->getQuoteCurrencyCode() != 'JPY') {
-            $this->warning("[Smartpay] Filters/CartAmountCurrency: \$quote->getCurrency()->getQuoteCurrencyCode() != 'JPY', hiding Smartpay", [
+            $this->logger->warning("[Smartpay] Filters/CartAmountCurrency: \$quote->getCurrency()->getQuoteCurrencyCode() != 'JPY', hiding Smartpay", [
                 'currencyCode' => $quote->getCurrency()->getQuoteCurrencyCode()
             ]);
             return false;
         }
         if (!isInt($quote->getGrandTotal())) {
-            $this->warning("[Smartpay] Filters/CartAmountCurrency: \$quote->geGrandTotal() is not int, hiding Smartpay", [
+            $this->logger->warning("[Smartpay] Filters/CartAmountCurrency: \$quote->geGrandTotal() is not int, hiding Smartpay", [
                 'grandTotal' => $quote->getGrandTotal()
             ]);
             return false;
@@ -61,7 +61,7 @@ class CartAmountCurrency implements FilterInterface
 
         foreach ($quote->getAllvisibleItems() as $item) {
             if (!isInt($item->getPriceInclTax())) {
-                $this->warning("[Smartpay] Filters/CartAmountCurrency: \$item->getPriceInclTax() is not int, hiding Smartpay", [
+                $this->logger->warning("[Smartpay] Filters/CartAmountCurrency: \$item->getPriceInclTax() is not int, hiding Smartpay", [
                     'itemName' => $item->getName(),
                     'itemId' => $item->getEntityId(),
                     'getPriceInclTax' => $item->getPriceInclTax()

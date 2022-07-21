@@ -38,14 +38,14 @@ class AllowCountries implements FilterInterface
     {
         $quoteBillingCountry = $quote->getBillingAddress()->getCountryId();
         if ($quoteBillingCountry && $quoteBillingCountry != 'JP') {
-            $this->warning("[Smartpay] Filters/AllowCountries: \$quoteBillingCountry != JP, hiding Smartpay", [
+            $this->logger->warning("[Smartpay] Filters/AllowCountries: \$quoteBillingCountry != JP, hiding Smartpay", [
                 'quoteBillingCountry' => $quoteBillingCountry
             ]);
             return false;
         }
         $quoteShippingCountry = $quote->getShippingAddress()->getCountryId();
         if ($quoteShippingCountry && $quoteShippingCountry != 'JP') {
-            $this->warning("[Smartpay] Filters/AllowCountries: \$quoteShippingCountry != JP, hiding Smartpay", [
+            $this->logger->warning("[Smartpay] Filters/AllowCountries: \$quoteShippingCountry != JP, hiding Smartpay", [
                 'quoteShippingCountry' => $quoteShippingCountry
             ]);
             return false;
